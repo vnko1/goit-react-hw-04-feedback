@@ -1,16 +1,46 @@
+import { useState } from 'react';
+import { FeedbackOptions, Statistics, Section, Notification } from './index';
+
 export const App = () => {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+
+  const onHandleClick = option => {
+    if (option === 'good') setGood(good + 1);
+    if (option === 'neutral') setNeutral(neutral + 1);
+    if (option === 'bad') setBad(bad + 1);
+  };
+
+  const countTotalFeedback = () => good + neutral + bad;
+
+  const countPositiveFeedbackPercentage = () => {
+    const total = countTotalFeedback();
+    return total ? Math.floor((good * 100) / countTotalFeedback()) : 0;
+  };
+
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
+    <>
+      <Section title={'Please leave feedback'}>
+        <FeedbackOptions
+          options={['good', 'neutral', 'bad']}
+          onHandleClick={onHandleClick}
+        />
+      </Section>
+
+      {countTotalFeedback() ? (
+        <Section title={'Statistics'}>
+          <Statistics
+            good={good}
+            neutral={neutral}
+            bad={bad}
+            total={countTotalFeedback()}
+            positivePercentage={countPositiveFeedbackPercentage()}
+          />
+        </Section>
+      ) : (
+        <Notification message={'There is no feedback'} />
+      )}
+    </>
   );
 };

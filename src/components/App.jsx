@@ -7,9 +7,9 @@ export const App = () => {
   const [bad, setBad] = useState(0);
 
   const onHandleClick = option => {
-    if (option === 'good') setGood(good + 1);
-    if (option === 'neutral') setNeutral(neutral + 1);
-    if (option === 'bad') setBad(bad + 1);
+    if (option === 'good') setGood(prevState => prevState + 1);
+    if (option === 'neutral') setNeutral(prevState => prevState + 1);
+    if (option === 'bad') setBad(prevState => prevState + 1);
   };
 
   const countTotalFeedback = () => good + neutral + bad;
